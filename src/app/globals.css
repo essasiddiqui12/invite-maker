@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+  /* Override Tailwind v4's oklch colors with plain sRGB hex to silence browser warnings */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media print {
+  /* Hide everything except the invitation */
+  [data-sharebar],
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  /* Remove padding added for the fixed share bar */
+  #invitation-content {
+    padding-top: 0 !important;
+  }
+
+  /* Ensure full-page print with no margins */
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
