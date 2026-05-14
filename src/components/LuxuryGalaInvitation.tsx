@@ -121,7 +121,14 @@ function SideOrnament({ className }: { className?: string }) {
   );
 }
 
-export default function LuxuryGalaInvitation({ title, hostName, date, time, location, message }: Props) {
+export default function LuxuryGalaInvitation({ title, hostName, date, time, location, message, customization }: Props) {
+  const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
+  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const fontFamilyMap = {
+    playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+    inter: 'var(--font-inter, Inter, sans-serif)',
+    mono: '"Courier New", Courier, monospace',
+  };
   const { weekday, day, month, year } = formatDate(date);
   const formattedTime = formatTime(time);
 
@@ -129,7 +136,7 @@ export default function LuxuryGalaInvitation({ title, hostName, date, time, loca
     <div
       id="invitation-content"
       className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
-      style={{ background: 'linear-gradient(160deg, #0A0A0A 0%, #0D0D0D 50%, #111111 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #0A0A0A 0%, #0D0D0D 50%, #111111 100%)' , fontSize: fontSizeMap[c.fontSize], fontFamily: fontFamilyMap[c.fontFamily] }}
     >
       <div className="w-full max-w-2xl">
 

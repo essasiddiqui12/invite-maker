@@ -128,7 +128,14 @@ function CornerAccent({ className, color }: { className?: string; color: string 
   );
 }
 
-export default function CasualInvitation({ title, hostName, date, time, location, message }: Props) {
+export default function CasualInvitation({ title, hostName, date, time, location, message, customization }: Props) {
+  const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
+  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const fontFamilyMap = {
+    playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+    inter: 'var(--font-inter, Inter, sans-serif)',
+    mono: '"Courier New", Courier, monospace',
+  };
   const { weekday, day, month, year } = formatDate(date);
   const formattedTime = formatTime(time);
 
@@ -136,7 +143,7 @@ export default function CasualInvitation({ title, hostName, date, time, location
     <div
       id="invitation-content"
       className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
-      style={{ backgroundColor: '#F8FFFE' }}
+      style={{ backgroundColor: '#F8FFFE' , fontSize: fontSizeMap[c.fontSize], fontFamily: fontFamilyMap[c.fontFamily] }}
     >
       <div className="w-full max-w-2xl">
 
