@@ -10,3 +10,7 @@ export { default as BirthdayInvitation } from './BirthdayInvitation';
 export { default as BabyShowerInvitation } from './BabyShowerInvitation';
 export { default as GraduationInvitation } from './GraduationInvitation';
 export { default as CorporateInvitation } from './CorporateInvitation';
+export { default as FloralInvitation } from './FloralInvitation';
+export { default as RusticInvitation } from './RusticInvitation';
+export { default as CasualInvitation } from './CasualInvitation';
+export { default as LuxuryGalaInvitation } from './LuxuryGalaInvitation';

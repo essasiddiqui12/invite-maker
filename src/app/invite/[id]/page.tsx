@@ -7,6 +7,10 @@ import BirthdayInvitation from '@/components/BirthdayInvitation';
 import BabyShowerInvitation from '@/components/BabyShowerInvitation';
 import GraduationInvitation from '@/components/GraduationInvitation';
 import CorporateInvitation from '@/components/CorporateInvitation';
+import FloralInvitation from '@/components/FloralInvitation';
+import RusticInvitation from '@/components/RusticInvitation';
+import CasualInvitation from '@/components/CasualInvitation';
+import LuxuryGalaInvitation from '@/components/LuxuryGalaInvitation';
 import ShareBar from '@/components/ShareBar';
 
 interface Props {
@@ -76,6 +80,14 @@ export default async function InvitationPage({ params }: Props) {
         <GraduationInvitation {...sharedProps} />
       ) : category === 'corporate' ? (
         <CorporateInvitation {...sharedProps} />
+      ) : category === 'floral' ? (
+        <FloralInvitation {...sharedProps} />
+      ) : category === 'rustic' ? (
+        <RusticInvitation {...sharedProps} />
+      ) : category === 'casual' ? (
+        <CasualInvitation {...sharedProps} />
+      ) : category === 'luxury' ? (
+        <LuxuryGalaInvitation {...sharedProps} />
       ) : (
         <LuxuryInvitation
           title={invitation.title}

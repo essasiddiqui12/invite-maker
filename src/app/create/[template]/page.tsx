@@ -12,6 +12,10 @@ import BirthdayInvitation from '@/components/BirthdayInvitation';
 import BabyShowerInvitation from '@/components/BabyShowerInvitation';
 import GraduationInvitation from '@/components/GraduationInvitation';
 import CorporateInvitation from '@/components/CorporateInvitation';
+import FloralInvitation from '@/components/FloralInvitation';
+import RusticInvitation from '@/components/RusticInvitation';
+import CasualInvitation from '@/components/CasualInvitation';
+import LuxuryGalaInvitation from '@/components/LuxuryGalaInvitation';
 
 interface FormData {
   title: string;
@@ -89,6 +93,14 @@ function ScaledPreview({
     previewComponent = <GraduationInvitation {...sharedPreviewProps} />;
   } else if (category === 'corporate') {
     previewComponent = <CorporateInvitation {...sharedPreviewProps} />;
+  } else if (category === 'floral') {
+    previewComponent = <FloralInvitation {...sharedPreviewProps} />;
+  } else if (category === 'rustic') {
+    previewComponent = <RusticInvitation {...sharedPreviewProps} />;
+  } else if (category === 'casual') {
+    previewComponent = <CasualInvitation {...sharedPreviewProps} />;
+  } else if (category === 'luxury') {
+    previewComponent = <LuxuryGalaInvitation {...sharedPreviewProps} />;
   } else {
     previewComponent = (
       <LuxuryInvitation
