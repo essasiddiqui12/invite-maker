@@ -18,7 +18,6 @@ interface Props {
 }
 
 async function getInvitation(id: string): Promise<(Invitation & { category: string }) | null> {
-  // Fetch invitation
   const { data: inv, error: invError } = await supabase
     .from('invitations')
     .select('*')
@@ -27,7 +26,6 @@ async function getInvitation(id: string): Promise<(Invitation & { category: stri
 
   if (invError || !inv) return null;
 
-  // Fetch template category separately (no FK relationship)
   let category = '';
   if (inv.template) {
     const { data: tmpl } = await supabase
@@ -48,6 +46,7 @@ export default async function InvitationPage({ params }: Props) {
   if (!invitation) notFound();
 
   const category = invitation.category ?? '';
+  const customization = invitation.customization ?? undefined;
 
   const sharedProps = {
     title: invitation.title,
@@ -56,6 +55,7 @@ export default async function InvitationPage({ params }: Props) {
     time: invitation.event_time,
     location: invitation.location,
     message: invitation.message ?? '',
+    customization,
   };
 
   return (
@@ -71,6 +71,7 @@ export default async function InvitationPage({ params }: Props) {
           time={invitation.event_time}
           location={invitation.location}
           message={invitation.message ?? ''}
+          customization={customization}
         />
       ) : category === 'birthday' ? (
         <BirthdayInvitation {...sharedProps} />
@@ -96,6 +97,7 @@ export default async function InvitationPage({ params }: Props) {
           time={invitation.event_time}
           location={invitation.location}
           message={invitation.message || undefined}
+          customization={customization}
         />
       )}
     </>

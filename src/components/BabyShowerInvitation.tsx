@@ -1,5 +1,7 @@
 'use client';
 
+import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
+
 interface BabyShowerInvitationProps {
   title: string;
   hostName: string;
@@ -7,6 +9,7 @@ interface BabyShowerInvitationProps {
   time: string;
   location: string;
   message?: string;
+  customization?: InvitationCustomization;
 }
 
 function formatDate(dateStr: string) {

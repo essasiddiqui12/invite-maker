@@ -1,5 +1,7 @@
 'use client';
 
+import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
+
 interface LuxuryInvitationProps {
   title: string;
   hostName: string;
@@ -7,6 +9,7 @@ interface LuxuryInvitationProps {
   time: string;
   location: string;
   message?: string;
+  customization?: InvitationCustomization;
 }
 
 export default function LuxuryInvitation({
@@ -16,7 +19,16 @@ export default function LuxuryInvitation({
   time,
   location,
   message,
+  customization,
 }: LuxuryInvitationProps) {
+  const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
+  const fontFamilyMap = {
+    playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+    inter: 'var(--font-inter, Inter, sans-serif)',
+    mono: '"Courier New", Courier, monospace',
+  };
+  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const ff = fontFamilyMap[c.fontFamily];
   const formatDate = (dateStr: string) => {
     try {
       const d = new Date(dateStr);
@@ -46,7 +58,7 @@ export default function LuxuryInvitation({
   };
 
   return (
-    <div id="invitation-content" className="min-h-screen bg-[#FDFBF7] flex flex-col pt-14">
+    <div id="invitation-content" className="min-h-screen flex flex-col pt-14" style={{ backgroundColor: c.bgColor, fontSize: fontSizeMap[c.fontSize], fontFamily: ff }}>
       {/* Hero Section */}
       <header className="py-16 sm:py-20 px-4 text-center">
         <div className="max-w-2xl mx-auto">
@@ -61,7 +73,7 @@ export default function LuxuryInvitation({
             You&apos;re Invited
           </p>
 
-          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6" style={{ color: c.textColor }}>
             {title}
           </h1>
 

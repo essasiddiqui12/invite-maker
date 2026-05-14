@@ -6,6 +6,8 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Navbar, Footer, Button, Input, TextArea } from '@/components';
 import { supabase } from '@/lib/supabase';
+import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
+import CustomizationPanel from '@/components/CustomizationPanel';
 import LuxuryInvitation from '@/components/LuxuryInvitation';
 import PremiumWeddingInvitation from '@/components/PremiumWeddingInvitation';
 import BirthdayInvitation from '@/components/BirthdayInvitation';
@@ -40,13 +42,14 @@ interface Template {
   category: string;
 }
 
-// Wrapper that scales the real invitation component to fit the preview panel
 function ScaledPreview({
   formData,
   category,
+  customization,
 }: {
   formData: FormData;
   category: string;
+  customization: InvitationCustomization;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.45);
@@ -54,8 +57,7 @@ function ScaledPreview({
   useEffect(() => {
     const update = () => {
       if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        setScale(containerWidth / 1024);
+        setScale(containerRef.current.offsetWidth / 1024);
       }
     };
     update();
@@ -63,58 +65,60 @@ function ScaledPreview({
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  const sharedPreviewProps = {
+  const shared = {
     title: formData.title || "You're Invited!",
     hostName: formData.host_name || 'Your Name',
     date: formData.event_date || '2025-12-31',
     time: formData.event_time || '18:00',
     location: formData.location || 'Venue TBD',
     message: formData.message || undefined,
+    customization,
   };
 
-  let previewComponent: ReactNode;
+  let preview: ReactNode;
   if (category === 'wedding') {
-    previewComponent = (
+    preview = (
       <PremiumWeddingInvitation
-        title={formData.title || "You're Invited!"}
-        brideName={formData.host_name || 'Bride & Groom'}
+        title={shared.title}
+        brideName={shared.hostName}
         groomName=""
-        date={formData.event_date || '2025-12-31'}
-        time={formData.event_time || '18:00'}
-        location={formData.location || 'Venue TBD'}
+        date={shared.date}
+        time={shared.time}
+        location={shared.location}
         message={formData.message}
+        customization={customization}
       />
     );
   } else if (category === 'birthday') {
-    previewComponent = <BirthdayInvitation {...sharedPreviewProps} />;
+    preview = <BirthdayInvitation {...shared} />;
   } else if (category === 'baby') {
-    previewComponent = <BabyShowerInvitation {...sharedPreviewProps} />;
+    preview = <BabyShowerInvitation {...shared} />;
   } else if (category === 'graduation') {
-    previewComponent = <GraduationInvitation {...sharedPreviewProps} />;
+    preview = <GraduationInvitation {...shared} />;
   } else if (category === 'corporate') {
-    previewComponent = <CorporateInvitation {...sharedPreviewProps} />;
+    preview = <CorporateInvitation {...shared} />;
   } else if (category === 'floral') {
-    previewComponent = <FloralInvitation {...sharedPreviewProps} />;
+    preview = <FloralInvitation {...shared} />;
   } else if (category === 'rustic') {
-    previewComponent = <RusticInvitation {...sharedPreviewProps} />;
+    preview = <RusticInvitation {...shared} />;
   } else if (category === 'casual') {
-    previewComponent = <CasualInvitation {...sharedPreviewProps} />;
+    preview = <CasualInvitation {...shared} />;
   } else if (category === 'luxury') {
-    previewComponent = <LuxuryGalaInvitation {...sharedPreviewProps} />;
+    preview = <LuxuryGalaInvitation {...shared} />;
   } else {
-    previewComponent = (
+    preview = (
       <LuxuryInvitation
-        title={formData.title || "You're Invited!"}
-        hostName={formData.host_name || 'Your Name'}
-        date={formData.event_date || '2025-12-31'}
-        time={formData.event_time || '18:00'}
-        location={formData.location || 'Venue TBD'}
-        message={formData.message || undefined}
+        title={shared.title}
+        hostName={shared.hostName}
+        date={shared.date}
+        time={shared.time}
+        location={shared.location}
+        message={shared.message}
+        customization={customization}
       />
     );
   }
 
-  // Estimated height of the real component at 1024px width
   const realHeight = 900;
 
   return (
@@ -127,12 +131,10 @@ function ScaledPreview({
           transformOrigin: 'top left',
         }}
       >
-        {/* Remove pt-14 that's meant for the fixed ShareBar */}
         <div className="[&_#invitation-content]:pt-0">
-          {previewComponent}
+          {preview}
         </div>
       </div>
-      {/* Spacer to match scaled height */}
       <div style={{ height: `${realHeight * scale}px` }} />
     </div>
   );
@@ -148,6 +150,7 @@ export default function CreatePage() {
   const [template, setTemplate] = useState<Template | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [customization, setCustomization] = useState<InvitationCustomization>(DEFAULT_CUSTOMIZATION);
   const [formData, setFormData] = useState<FormData>({
     title: '',
     host_name: '',
@@ -214,6 +217,7 @@ export default function CreatePage() {
           event_time: formData.event_time,
           location: formData.location,
           message: formData.message,
+          customization,
         })
         .select()
         .single();
@@ -303,7 +307,7 @@ export default function CreatePage() {
         {showMobilePreview && (
           <div className="lg:hidden bg-gray-100 border-b border-gray-200 p-4">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest text-center mb-3">Live Preview</p>
-            <ScaledPreview formData={formData} category={template.category} />
+            <ScaledPreview formData={formData} category={template.category} customization={customization} />
           </div>
         )}
 
@@ -340,6 +344,9 @@ export default function CreatePage() {
                     <Input label="Location" name="location" placeholder="123 Main Street, City" value={formData.location} onChange={handleChange} error={errors.location} required />
                     <TextArea label="Personal Message (Optional)" name="message" placeholder="Add a warm message for your guests..." value={formData.message} onChange={handleChange} rows={3} />
 
+                    {/* Customization Panel */}
+                    <CustomizationPanel value={customization} onChange={setCustomization} />
+
                     <div className="pt-2">
                       <Button type="submit" size="lg" className="w-full" loading={loading}>
                         Create Invitation
@@ -353,7 +360,7 @@ export default function CreatePage() {
               </div>
             </div>
 
-            {/* RIGHT: Live Preview — exact same component, scaled */}
+            {/* RIGHT: Live Preview */}
             <div className="hidden lg:flex flex-1 flex-col min-w-0">
               <div className="sticky top-6">
                 <div className="flex items-center justify-between mb-3">
@@ -364,7 +371,7 @@ export default function CreatePage() {
                   </span>
                 </div>
                 <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-xl shadow-gray-200/50">
-                  <ScaledPreview formData={formData} category={template.category} />
+                  <ScaledPreview formData={formData} category={template.category} customization={customization} />
                 </div>
               </div>
             </div>

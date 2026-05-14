@@ -1,5 +1,7 @@
 'use client';
 
+import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
+
 interface BirthdayInvitationProps {
   title: string;
   hostName: string;
@@ -7,6 +9,7 @@ interface BirthdayInvitationProps {
   time: string;
   location: string;
   message?: string;
+  customization?: InvitationCustomization;
 }
 
 function formatDate(dateStr: string) {
@@ -122,7 +125,15 @@ export default function BirthdayInvitation({
   time,
   location,
   message,
+  customization,
 }: BirthdayInvitationProps) {
+  const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
+  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const fontFamilyMap = {
+    playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+    inter: 'var(--font-inter, Inter, sans-serif)',
+    mono: '"Courier New", Courier, monospace',
+  };
   const { weekday, day, month, year } = formatDate(date);
   const formattedTime = formatTime(time);
 
@@ -130,7 +141,7 @@ export default function BirthdayInvitation({
     <div
       id="invitation-content"
       className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
-      style={{ background: 'linear-gradient(150deg, #0D1B3E 0%, #0A1628 40%, #12203A 100%)' }}
+      style={{ background: 'linear-gradient(150deg, #0D1B3E 0%, #0A1628 40%, #12203A 100%)', fontSize: fontSizeMap[c.fontSize], fontFamily: fontFamilyMap[c.fontFamily] }}
     >
       <div className="w-full max-w-2xl">
 

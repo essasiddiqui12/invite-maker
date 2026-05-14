@@ -1,5 +1,7 @@
 'use client';
 
+import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
+
 interface Props {
   title: string;
   hostName: string;
@@ -7,6 +9,7 @@ interface Props {
   time: string;
   location: string;
   message?: string;
+  customization?: InvitationCustomization;
 }
 
 function formatDate(dateStr: string) {

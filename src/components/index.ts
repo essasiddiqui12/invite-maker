@@ -14,3 +14,4 @@ export { default as FloralInvitation } from './FloralInvitation';
 export { default as RusticInvitation } from './RusticInvitation';
 export { default as CasualInvitation } from './CasualInvitation';
 export { default as LuxuryGalaInvitation } from './LuxuryGalaInvitation';
+export { default as CustomizationPanel } from './CustomizationPanel';

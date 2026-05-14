@@ -1,5 +1,7 @@
 'use client';
 
+import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
+
 type WeddingInvitationProps = {
   title: string;
   brideName: string;
@@ -8,6 +10,7 @@ type WeddingInvitationProps = {
   time: string;
   location: string;
   message: string;
+  customization?: InvitationCustomization;
 };
 
 function formatDate(dateStr: string) {
@@ -215,7 +218,15 @@ export default function PremiumWeddingInvitation({
   time,
   location,
   message,
+  customization,
 }: WeddingInvitationProps) {
+  const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
+  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const fontFamilyMap = {
+    playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+    inter: 'var(--font-inter, Inter, sans-serif)',
+    mono: '"Courier New", Courier, monospace',
+  };
   const { weekday, day, month, year } = formatDate(date);
   const formattedTime = formatTime(time);
 
@@ -224,9 +235,11 @@ export default function PremiumWeddingInvitation({
       id="invitation-content"
       className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
       style={{
-        background: '#FDFAF4',
+        background: c.bgColor,
         backgroundImage:
-          'radial-gradient(ellipse at center, #FDFAF4 40%, #EDE4D0 100%)',
+          `radial-gradient(ellipse at center, ${c.bgColor} 40%, #EDE4D0 100%)`,
+        fontSize: fontSizeMap[c.fontSize],
+        fontFamily: fontFamilyMap[c.fontFamily],
       }}
     >
       <div className="w-full max-w-2xl">
@@ -236,7 +249,7 @@ export default function PremiumWeddingInvitation({
           className="relative rounded-2xl p-[2px]"
           style={{
             background:
-              'linear-gradient(135deg, #F0E0B0 0%, #A07840 15%, #C9A96E 30%, #F0E0B0 45%, #A07840 60%, #C9A96E 75%, #F0E0B0 90%, #A07840 100%)',
+              `linear-gradient(135deg, ${c.accentColor} 0%, #A07840 15%, ${c.accentColor} 30%, #F0E0B0 45%, #A07840 60%, ${c.accentColor} 75%, #F0E0B0 90%, #A07840 100%)`,
             boxShadow:
               '0 32px 80px rgba(160,120,64,0.22), 0 8px 32px rgba(160,120,64,0.14), inset 0 1px 0 rgba(240,224,176,0.6)',
           }}
@@ -298,7 +311,14 @@ export default function PremiumWeddingInvitation({
 
               {/* ── Star cluster ── */}
               <div className="flex justify-center mb-6">
-                <StarCluster />
+                <svg viewBox="0 0 80 30" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: 80, height: 30 }} aria-hidden="true">
+                  {/* Large center star */}
+                  <path d="M40 2 L42 10 L50 10 L44 15 L46 23 L40 18 L34 23 L36 15 L30 10 L38 10 Z" fill={c.accentColor} opacity="0.85" />
+                  {/* Small left star */}
+                  <path d="M16 8 L17 12 L21 12 L18 14.5 L19 18.5 L16 16 L13 18.5 L14 14.5 L11 12 L15 12 Z" fill="#E8D5A3" opacity="0.7" />
+                  {/* Small right star */}
+                  <path d="M64 8 L65 12 L69 12 L66 14.5 L67 18.5 L64 16 L61 18.5 L62 14.5 L59 12 L63 12 Z" fill="#E8D5A3" opacity="0.7" />
+                </svg>
               </div>
 
               {/* ── Title (if provided) ── */}
@@ -322,14 +342,20 @@ export default function PremiumWeddingInvitation({
                   className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight"
                   style={{
                     fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                    color: '#1A1208',
+                    color: c.textColor,
                     textShadow: '0 2px 12px rgba(201,169,110,0.35), 0 1px 3px rgba(160,120,64,0.2)',
                   }}
                 >
                   {brideName}
                 </h2>
                 <div className="flex justify-center mt-2">
-                  <NameUnderline />
+                  <svg viewBox="0 0 320 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', maxWidth: 320 }} aria-hidden="true">
+                    <path d="M10 9 Q80 16 160 9 Q240 2 310 9" stroke={c.accentColor} strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.7" />
+                    <path d="M30 12 Q100 17 160 12 Q220 7 290 12" stroke="#E8D5A3" strokeWidth="0.6" fill="none" strokeLinecap="round" opacity="0.4" />
+                    <circle cx="160" cy="9" r="2.5" fill={c.accentColor} opacity="0.8" />
+                    <circle cx="80" cy="13" r="1.5" fill="#E8D5A3" opacity="0.5" />
+                    <circle cx="240" cy="5" r="1.5" fill="#E8D5A3" opacity="0.5" />
+                  </svg>
                 </div>
               </div>
 
@@ -358,14 +384,20 @@ export default function PremiumWeddingInvitation({
                   className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight"
                   style={{
                     fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                    color: '#1A1208',
+                    color: c.textColor,
                     textShadow: '0 2px 12px rgba(201,169,110,0.35), 0 1px 3px rgba(160,120,64,0.2)',
                   }}
                 >
                   {groomName}
                 </h2>
                 <div className="flex justify-center mt-2">
-                  <NameUnderline />
+                  <svg viewBox="0 0 320 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', maxWidth: 320 }} aria-hidden="true">
+                    <path d="M10 9 Q80 16 160 9 Q240 2 310 9" stroke={c.accentColor} strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.7" />
+                    <path d="M30 12 Q100 17 160 12 Q220 7 290 12" stroke="#E8D5A3" strokeWidth="0.6" fill="none" strokeLinecap="round" opacity="0.4" />
+                    <circle cx="160" cy="9" r="2.5" fill={c.accentColor} opacity="0.8" />
+                    <circle cx="80" cy="13" r="1.5" fill="#E8D5A3" opacity="0.5" />
+                    <circle cx="240" cy="5" r="1.5" fill="#E8D5A3" opacity="0.5" />
+                  </svg>
                 </div>
               </div>
 
