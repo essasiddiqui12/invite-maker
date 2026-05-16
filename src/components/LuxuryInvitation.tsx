@@ -1,5 +1,15 @@
 'use client';
 
+function hexToRgba(hex: string, alpha: number): string {
+  const clean = hex.replace('#', '');
+  const full = clean.length === 3 ? clean.split('').map(x => x + x).join('') : clean.slice(0, 6);
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  if (isNaN(r) || isNaN(g) || isNaN(b)) return `rgba(201,169,110,${alpha})`;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
 
 interface LuxuryInvitationProps {
@@ -12,6 +22,31 @@ interface LuxuryInvitationProps {
   customization?: InvitationCustomization;
 }
 
+function formatDate(dateStr: string) {
+  try {
+    const d = new Date(dateStr);
+    return {
+      weekday: d.toLocaleDateString('en-US', { weekday: 'long' }),
+      day: d.toLocaleDateString('en-US', { day: 'numeric' }),
+      month: d.toLocaleDateString('en-US', { month: 'long' }),
+      year: d.toLocaleDateString('en-US', { year: 'numeric' }),
+    };
+  } catch {
+    return { weekday: '', day: dateStr, month: '', year: '' };
+  }
+}
+
+function formatTime(timeStr: string) {
+  try {
+    const [h, m] = timeStr.split(':');
+    const d = new Date();
+    d.setHours(parseInt(h), parseInt(m));
+    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  } catch {
+    return timeStr;
+  }
+}
+
 export default function LuxuryInvitation({
   title,
   hostName,
@@ -22,157 +57,175 @@ export default function LuxuryInvitation({
   customization,
 }: LuxuryInvitationProps) {
   const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
+  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
   const fontFamilyMap = {
     playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
     inter: 'var(--font-inter, Inter, sans-serif)',
     mono: '"Courier New", Courier, monospace',
   };
-  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
-  const ff = fontFamilyMap[c.fontFamily];
-  const formatDate = (dateStr: string) => {
-    try {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
-  };
-
-  const formatTime = (timeStr: string) => {
-    try {
-      const [hours, minutes] = timeStr.split(':');
-      const d = new Date();
-      d.setHours(parseInt(hours), parseInt(minutes));
-      return d.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-      });
-    } catch {
-      return timeStr;
-    }
-  };
+  const { weekday, day, month, year } = formatDate(date);
+  const formattedTime = formatTime(time);
 
   return (
-    <div id="invitation-content" className="min-h-screen flex flex-col pt-14" style={{ backgroundColor: c.bgColor, fontSize: fontSizeMap[c.fontSize], fontFamily: ff }}>
-      {/* Hero Section */}
-      <header className="py-16 sm:py-20 px-4 text-center">
-        <div className="max-w-2xl mx-auto">
-          {/* Decorative divider */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-            <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-          </div>
-
-          <p className="text-amber-700 tracking-[0.3em] text-xs sm:text-sm uppercase font-medium mb-4">
-            You&apos;re Invited
-          </p>
-
-          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6" style={{ color: c.textColor }}>
-            {title}
-          </h1>
-
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-            <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-          </div>
-        </div>
-      </header>
-
-      {/* Event Details */}
-      <main className="flex-1 px-4 pb-16">
-        <div className="max-w-xl mx-auto">
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-xl shadow-amber-900/5 border border-amber-100/50 p-8 sm:p-10">
-            {/* Host */}
-            <div className="text-center mb-10">
-              <p className="text-gray-500 text-sm uppercase tracking-widest mb-2">
-                Together with their families
-              </p>
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl sm:text-3xl font-semibold text-gray-900">
-                {hostName}
-              </h2>
-            </div>
-
-            {/* Decorative divider */}
-            <div className="flex items-center justify-center gap-3 mb-10">
-              <div className="w-12 h-px bg-amber-200" />
-              <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2Z" />
-              </svg>
-              <div className="w-12 h-px bg-amber-200" />
-            </div>
-
-            {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-8 mb-10">
-              <div className="text-center">
-                <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-amber-50 to-amber-100 rounded-full flex items-center justify-center shadow-inner">
-                  <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
+    <div
+      id="invitation-content"
+      className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
+      style={{
+        background: c.bgColor,
+        fontSize: fontSizeMap[c.fontSize],
+        fontFamily: fontFamilyMap[c.fontFamily],
+      }}
+    >
+      <div className="w-full max-w-2xl">
+        <div
+          className="relative rounded-2xl p-[3px]"
+          style={{
+            background: `linear-gradient(135deg, ${c.accentColor} 0%, ${c.accentColor}dd 50%, ${c.accentColor} 100%)`,
+            boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+          }}
+        >
+          <div
+            className="relative rounded-2xl overflow-hidden"
+            style={{ background: c.bgColor }}
+          >
+            <div className="relative px-8 sm:px-12 py-12 sm:py-16">
+              
+              {/* Header */}
+              <div className="text-center mb-8">
+                <div className="inline-block px-6 py-2 rounded-full mb-6"
+                  style={{
+                    background: `${c.accentColor}15`,
+                    border: `1px solid ${c.accentColor}30`,
+                  }}
+                >
+                  <p className="text-xs tracking-[0.3em] uppercase" style={{ color: c.accentColor, fontWeight: 600 }}>
+                    You&apos;re Invited
+                  </p>
                 </div>
-                <p className="text-gray-800 font-semibold text-lg leading-snug">
-                  {formatDate(date)}
-                </p>
-              </div>
 
-              <div className="text-center">
-                <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-amber-50 to-amber-100 rounded-full flex items-center justify-center shadow-inner">
-                  <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                <h1
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4"
+                  style={{ color: c.textColor }}
+                >
+                  {title}
+                </h1>
+
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <div className="h-px w-16" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor})` }} />
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: c.accentColor }} />
+                  <div className="h-px w-16" style={{ background: `linear-gradient(270deg, transparent, ${c.accentColor})` }} />
                 </div>
-                <p className="text-gray-800 font-semibold text-lg leading-snug">
-                  {formatTime(time)}
+              </div>
+
+              {/* Host name */}
+              <div className="text-center mb-10">
+                <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: `${c.accentColor}cc` }}>
+                  Hosted by
                 </p>
+                <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: c.textColor }}>
+                  {hostName}
+                </h2>
               </div>
-            </div>
 
-            {/* Location */}
-            <div className="text-center mb-10">
-              <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-amber-50 to-amber-100 rounded-full flex items-center justify-center shadow-inner">
-                <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+              {/* Details card */}
+              <div
+                className="rounded-xl p-6 sm:p-8 mb-8"
+                style={{
+                  background: `${c.accentColor}08`,
+                  border: `1px solid ${c.accentColor}20`,
+                }}
+              >
+                <div className="text-center mb-6">
+                  <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: c.accentColor }}>
+                    Date
+                  </p>
+                  <p className="text-xs tracking-widest uppercase mb-1" style={{ color: `${c.textColor}80` }}>
+                    {weekday}
+                  </p>
+                  <div className="flex items-baseline justify-center gap-3">
+                    <span className="text-5xl sm:text-6xl font-bold leading-none" style={{ color: c.textColor }}>
+                      {day}
+                    </span>
+                    <div className="flex flex-col items-start">
+                      <span className="text-lg font-semibold leading-tight" style={{ color: c.accentColor }}>
+                        {month}
+                      </span>
+                      <span className="text-sm" style={{ color: `${c.textColor}80` }}>
+                        {year}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex-1 h-px" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor}40)` }} />
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: c.accentColor, opacity: 0.8 }} />
+                  <div className="flex-1 h-px" style={{ background: `linear-gradient(270deg, transparent, ${c.accentColor}40)` }} />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"
+                      style={{ background: `${c.accentColor}20` }}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke={c.accentColor} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor }}>Time</p>
+                    <p className="text-base font-semibold" style={{ color: c.textColor }}>
+                      {formattedTime}
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"
+                      style={{ background: `${c.accentColor}20` }}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke={c.accentColor} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor }}>Venue</p>
+                    <p className="text-sm font-semibold leading-snug" style={{ color: c.textColor }}>
+                      {location}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="text-gray-800 font-semibold text-lg leading-relaxed max-w-xs mx-auto">
-                {location}
-              </p>
-            </div>
 
-            {/* Message */}
-            {message && (
-              <div className="relative">
-                <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-200 to-transparent" />
-                <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-amber-200 to-transparent" />
-                <div className="py-6 px-4">
-                  <p className="font-[family-name:var(--font-playfair)] text-gray-700 italic text-center text-lg leading-relaxed">
+              {/* Message */}
+              {message && (
+                <div className="text-center mb-8 px-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="flex-1 h-px" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor}40)` }} />
+                    <div className="w-1 h-1 rounded-full" style={{ backgroundColor: c.accentColor }} />
+                    <div className="flex-1 h-px" style={{ background: `linear-gradient(270deg, transparent, ${c.accentColor}40)` }} />
+                  </div>
+                  <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: `${c.textColor}cc` }}>
                     &ldquo;{message}&rdquo;
                   </p>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
+              )}
 
-      {/* Footer Watermark */}
-      <footer className="py-8 px-4 text-center">
-        <div className="flex items-center justify-center gap-2 text-amber-600/60">
-          <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+              {/* Footer */}
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-px w-12" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor}40)` }} />
+                  <p className="text-xs tracking-[0.35em] uppercase" style={{ color: `${c.accentColor}80` }}>
+                    Created with InviteMaker
+                  </p>
+                  <div className="h-px w-12" style={{ background: `linear-gradient(270deg, transparent, ${c.accentColor}40)` }} />
+                </div>
+              </div>
+
+            </div>
           </div>
-          <span className="text-sm font-medium">InviteMaker</span>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

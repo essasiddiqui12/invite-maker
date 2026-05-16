@@ -1,5 +1,15 @@
 'use client';
 
+function hexToRgba(hex: string, alpha: number): string {
+  const clean = hex.replace('#', '');
+  const full = clean.length === 3 ? clean.split('').map(x => x + x).join('') : clean.slice(0, 6);
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  if (isNaN(r) || isNaN(g) || isNaN(b)) return `rgba(201,169,110,${alpha})`;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
 
 interface BirthdayInvitationProps {

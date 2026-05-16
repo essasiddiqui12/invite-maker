@@ -1,5 +1,15 @@
 'use client';
 
+function hexToRgba(hex: string, alpha: number): string {
+  const clean = hex.replace('#', '');
+  const full = clean.length === 3 ? clean.split('').map(x => x + x).join('') : clean.slice(0, 6);
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  if (isNaN(r) || isNaN(g) || isNaN(b)) return `rgba(201,169,110,${alpha})`;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 import { InvitationCustomization, DEFAULT_CUSTOMIZATION } from '@/types/invitation';
 
 interface CorporateInvitationProps {
@@ -37,116 +47,8 @@ function formatTime(timeStr: string) {
   }
 }
 
-// Geometric grid background pattern
-function GeometricBackground() {
-  return (
-    <svg
-      viewBox="0 0 600 800"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      {/* Subtle grid lines */}
-      <line x1="0" y1="200" x2="600" y2="200" stroke="#C0C8D0" strokeWidth="0.3" opacity="0.15" />
-      <line x1="0" y1="400" x2="600" y2="400" stroke="#C0C8D0" strokeWidth="0.3" opacity="0.15" />
-      <line x1="0" y1="600" x2="600" y2="600" stroke="#C0C8D0" strokeWidth="0.3" opacity="0.15" />
-      <line x1="150" y1="0" x2="150" y2="800" stroke="#C0C8D0" strokeWidth="0.3" opacity="0.15" />
-      <line x1="300" y1="0" x2="300" y2="800" stroke="#C0C8D0" strokeWidth="0.3" opacity="0.15" />
-      <line x1="450" y1="0" x2="450" y2="800" stroke="#C0C8D0" strokeWidth="0.3" opacity="0.15" />
-      {/* Diagonal accent lines */}
-      <line x1="0" y1="0" x2="200" y2="200" stroke="#B8A060" strokeWidth="0.5" opacity="0.08" />
-      <line x1="400" y1="0" x2="600" y2="200" stroke="#B8A060" strokeWidth="0.5" opacity="0.08" />
-      <line x1="0" y1="600" x2="200" y2="800" stroke="#B8A060" strokeWidth="0.5" opacity="0.08" />
-      <line x1="400" y1="600" x2="600" y2="800" stroke="#B8A060" strokeWidth="0.5" opacity="0.08" />
-      {/* Corner geometric shapes */}
-      <polygon points="0,0 60,0 0,60" fill="#B8A060" opacity="0.06" />
-      <polygon points="600,0 540,0 600,60" fill="#B8A060" opacity="0.06" />
-      <polygon points="0,800 60,800 0,740" fill="#B8A060" opacity="0.06" />
-      <polygon points="600,800 540,800 600,740" fill="#B8A060" opacity="0.06" />
-      {/* Hexagon accents */}
-      <polygon points="300,30 315,39 315,57 300,66 285,57 285,39" stroke="#B8A060" strokeWidth="0.8" fill="none" opacity="0.15" />
-      <polygon points="300,734 315,743 315,761 300,770 285,761 285,743" stroke="#B8A060" strokeWidth="0.8" fill="none" opacity="0.15" />
-    </svg>
-  );
-}
-
-// Geometric corner ornament
-function GeometricCorner({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
-      {/* L-bracket */}
-      <path d="M4 4 L4 40 M4 4 L40 4" stroke="#B8A060" strokeWidth="2" strokeLinecap="square" opacity="0.7" />
-      {/* Inner bracket */}
-      <path d="M12 12 L12 30 M12 12 L30 12" stroke="#9BA8B5" strokeWidth="1" strokeLinecap="square" opacity="0.4" />
-      {/* Corner dot */}
-      <rect x="2" y="2" width="4" height="4" fill="#B8A060" opacity="0.8" />
-      {/* Accent diamond */}
-      <path d="M20 20 L23 23 L20 26 L17 23 Z" fill="#B8A060" opacity="0.3" />
-    </svg>
-  );
-}
-
-// Silver/gold horizontal rule with diamond
-function ExecutiveDivider() {
-  return (
-    <svg viewBox="0 0 320 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full max-w-xs mx-auto">
-      <line x1="0" y1="8" x2="130" y2="8" stroke="url(#silverGrad)" strokeWidth="0.8" opacity="0.7" />
-      <defs>
-        <linearGradient id="silverGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#9BA8B5" stopOpacity="0" />
-          <stop offset="100%" stopColor="#9BA8B5" stopOpacity="1" />
-        </linearGradient>
-        <linearGradient id="silverGradR" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#9BA8B5" stopOpacity="1" />
-          <stop offset="100%" stopColor="#9BA8B5" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {/* Diamond */}
-      <path d="M160 4 L164 8 L160 12 L156 8 Z" fill="#B8A060" opacity="0.9" />
-      <path d="M160 5.5 L162.5 8 L160 10.5 L157.5 8 Z" fill="#D4C070" opacity="0.6" />
-      <line x1="190" y1="8" x2="320" y2="8" stroke="url(#silverGradR)" strokeWidth="0.8" opacity="0.7" />
-    </svg>
-  );
-}
-
-// Geometric monogram frame
-function MonogramFrame() {
-  return (
-    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 mx-auto" aria-hidden="true">
-      {/* Outer octagon */}
-      <polygon
-        points="24,4 56,4 76,24 76,56 56,76 24,76 4,56 4,24"
-        stroke="#B8A060"
-        strokeWidth="1.5"
-        fill="none"
-        opacity="0.6"
-      />
-      {/* Inner octagon */}
-      <polygon
-        points="28,12 52,12 68,28 68,52 52,68 28,68 12,52 12,28"
-        stroke="#9BA8B5"
-        strokeWidth="0.8"
-        fill="none"
-        opacity="0.35"
-      />
-      {/* Center diamond */}
-      <path d="M40 28 L52 40 L40 52 L28 40 Z" stroke="#B8A060" strokeWidth="1" fill="rgba(184,160,96,0.08)" opacity="0.7" />
-      {/* Center dot */}
-      <circle cx="40" cy="40" r="3" fill="#B8A060" opacity="0.7" />
-    </svg>
-  );
-}
-
 export default function CorporateInvitation({
-  title,
-  hostName,
-  date,
-  time,
-  location,
-  message,
-  customization,
+  title, hostName, date, time, location, message, customization,
 }: CorporateInvitationProps) {
   const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
   const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
@@ -162,236 +64,128 @@ export default function CorporateInvitation({
     <div
       id="invitation-content"
       className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
-      style={{ background: 'linear-gradient(160deg, #1C2330 0%, #161D28 50%, #1A2130 100%)' , fontSize: fontSizeMap[c.fontSize], fontFamily: fontFamilyMap[c.fontFamily] }}
+      style={{ background: c.bgColor, fontSize: fontSizeMap[c.fontSize], fontFamily: fontFamilyMap[c.fontFamily] }}
     >
       <div className="w-full max-w-2xl">
-
-        {/* Outer silver-gold frame */}
         <div
-          className="relative rounded-2xl p-px"
+          className="relative rounded-xl overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, #9BA8B5 0%, #B8A060 25%, #D4C070 50%, #B8A060 75%, #9BA8B5 100%)',
-            boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(184,160,96,0.15)',
+            boxShadow: `0 32px 80px ${c.accentColor}25, 0 8px 32px rgba(0,0,0,0.12)`,
+            border: `1px solid ${c.accentColor}30`,
           }}
         >
-          {/* Inner card */}
-          <div
-            className="relative rounded-2xl overflow-hidden"
-            style={{ background: 'linear-gradient(160deg, #1E2A38 0%, #18222E 50%, #1C2838 100%)' }}
-          >
-            {/* Geometric background */}
-            <GeometricBackground />
+          {/* Top accent bar */}
+          <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${c.accentColor}, ${c.accentColor}aa, ${c.accentColor})` }} />
 
-            {/* Corner ornaments */}
-            <div className="absolute top-4 left-4">
-              <GeometricCorner className="w-12 h-12" />
-            </div>
-            <div className="absolute top-4 right-4 rotate-90">
-              <GeometricCorner className="w-12 h-12" />
-            </div>
-            <div className="absolute bottom-4 left-4 -rotate-90">
-              <GeometricCorner className="w-12 h-12" />
-            </div>
-            <div className="absolute bottom-4 right-4 rotate-180">
-              <GeometricCorner className="w-12 h-12" />
-            </div>
-
-            <div className="relative px-10 sm:px-16 py-14 sm:py-16">
+          <div style={{ background: c.bgColor }}>
+            <div className="px-8 sm:px-12 py-12 sm:py-14">
 
               {/* Header */}
-              <div className="text-center mb-8">
-                {/* Monogram frame */}
-                <div className="mb-5">
-                  <MonogramFrame />
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-3 mb-6">
+                  <div className="h-px w-8" style={{ backgroundColor: c.accentColor, opacity: 0.5 }} />
+                  <p className="text-xs tracking-[0.5em] uppercase font-semibold" style={{ color: c.accentColor }}>
+                    Formal Invitation
+                  </p>
+                  <div className="h-px w-8" style={{ backgroundColor: c.accentColor, opacity: 0.5 }} />
                 </div>
 
-                <p
-                  className="text-xs tracking-[0.5em] uppercase mb-3"
-                  style={{ color: '#9BA8B5', fontFamily: 'var(--font-inter, Inter, sans-serif)', fontWeight: 500 }}
-                >
-                  Exclusive Invitation
-                </p>
-
-                <h1
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4"
-                  style={{
-                    fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                    color: '#EEE8D8',
-                    letterSpacing: '-0.01em',
-                  }}
-                >
+                <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-4" style={{ color: c.textColor }}>
                   {title}
                 </h1>
 
-                <ExecutiveDivider />
+                <div className="flex items-center justify-center gap-2">
+                  <div className="h-px w-20" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor})` }} />
+                  <div className="w-1.5 h-1.5" style={{ backgroundColor: c.accentColor }} />
+                  <div className="h-px w-20" style={{ background: `linear-gradient(270deg, transparent, ${c.accentColor})` }} />
+                </div>
               </div>
 
-              {/* Host */}
-              <div className="text-center mb-10">
-                <p
-                  className="text-xs tracking-[0.4em] uppercase mb-2"
-                  style={{ color: '#B8A060', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
-                >
-                  Hosted by
+              {/* Hosted by */}
+              <div className="text-center mb-10 pb-8" style={{ borderBottom: `1px solid ${c.accentColor}20` }}>
+                <p className="text-xs tracking-[0.4em] uppercase mb-2" style={{ color: `${c.accentColor}cc` }}>
+                  Presented by
                 </p>
-                <h2
-                  className="text-2xl sm:text-3xl font-bold mb-2"
-                  style={{
-                    fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                    color: '#EEE8D8',
-                  }}
-                >
+                <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: c.textColor }}>
                   {hostName}
                 </h2>
-                {/* Geometric underline */}
-                <div className="flex items-center justify-center gap-2 mt-2">
-                  <div className="h-px w-12" style={{ backgroundColor: '#9BA8B5', opacity: 0.4 }} />
-                  <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: '#B8A060', opacity: 0.8 }} />
-                  <div className="h-px w-12" style={{ backgroundColor: '#9BA8B5', opacity: 0.4 }} />
-                </div>
               </div>
 
-              {/* Details card */}
-              <div
-                className="rounded-xl p-6 sm:p-8 mb-8"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(155,168,181,0.06) 0%, rgba(184,160,96,0.08) 100%)',
-                  border: '1px solid rgba(155,168,181,0.2)',
-                }}
-              >
-                {/* Date */}
-                <div className="text-center mb-6">
-                  <p
-                    className="text-xs tracking-[0.35em] uppercase mb-2"
-                    style={{ color: '#B8A060', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
-                  >
-                    Date
-                  </p>
-                  <p
-                    className="text-xs tracking-widest uppercase mb-1"
-                    style={{ color: 'rgba(238,232,216,0.4)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
-                  >
-                    {weekday}
-                  </p>
-                  <div className="flex items-baseline justify-center gap-3">
-                    <span
-                      className="text-5xl sm:text-6xl font-bold leading-none"
-                      style={{
-                        fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                        color: '#EEE8D8',
-                      }}
-                    >
-                      {day}
-                    </span>
-                    <div className="flex flex-col items-start">
-                      <span
-                        className="text-lg font-semibold leading-tight"
-                        style={{
-                          fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                          color: '#B8A060',
-                        }}
-                      >
-                        {month}
-                      </span>
-                      <span
-                        className="text-sm"
-                        style={{ color: 'rgba(238,232,216,0.4)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
-                      >
-                        {year}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(155,168,181,0.4))' }} />
-                  <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: '#B8A060', opacity: 0.7 }} />
-                  <div className="flex-1 h-px" style={{ background: 'linear-gradient(270deg, transparent, rgba(155,168,181,0.4))' }} />
-                </div>
-
-                {/* Time & Location */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2"
-                      style={{ background: 'linear-gradient(135deg, rgba(155,168,181,0.15), rgba(184,160,96,0.2))' }}
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="#B8A060" viewBox="0 0 24 24">
+              {/* Details — horizontal layout */}
+              <div className="grid grid-cols-3 gap-6 mb-10">
+                {[
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" stroke={c.accentColor} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    ),
+                    label: 'Date',
+                    value: `${weekday}`,
+                    sub: `${day} ${month} ${year}`,
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" stroke={c.accentColor} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                    </div>
-                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: '#9BA8B5', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>Time</p>
-                    <p className="text-base font-semibold" style={{ fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)', color: '#EEE8D8' }}>
-                      {formattedTime}
-                    </p>
-                  </div>
-
-                  <div className="text-center">
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2"
-                      style={{ background: 'linear-gradient(135deg, rgba(155,168,181,0.15), rgba(184,160,96,0.2))' }}
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="#9BA8B5" viewBox="0 0 24 24">
+                    ),
+                    label: 'Time',
+                    value: formattedTime,
+                    sub: 'Sharp',
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" stroke={c.accentColor} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
+                    ),
+                    label: 'Venue',
+                    value: location,
+                    sub: '',
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="text-center">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-3" style={{ background: `${c.accentColor}15`, border: `1px solid ${c.accentColor}25` }}>
+                      {item.icon}
                     </div>
-                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: '#9BA8B5', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>Venue</p>
-                    <p className="text-sm font-semibold leading-snug" style={{ fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)', color: '#EEE8D8' }}>
-                      {location}
-                    </p>
+                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor }}>{item.label}</p>
+                    <p className="text-sm font-semibold leading-snug" style={{ color: c.textColor }}>{item.value}</p>
+                    {item.sub && <p className="text-xs mt-0.5" style={{ color: `${c.textColor}60` }}>{item.sub}</p>}
                   </div>
-                </div>
+                ))}
               </div>
 
               {/* Message */}
               {message && (
-                <div className="text-center mb-8 px-4">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(155,168,181,0.4))' }} />
-                    <div className="w-2 h-2 rotate-45" style={{ backgroundColor: '#B8A060', opacity: 0.7 }} />
-                    <div className="flex-1 h-px" style={{ background: 'linear-gradient(270deg, transparent, rgba(155,168,181,0.4))' }} />
-                  </div>
-                  <p
-                    className="text-base sm:text-lg italic leading-relaxed"
-                    style={{
-                      fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
-                      color: 'rgba(238,232,216,0.75)',
-                    }}
-                  >
+                <div
+                  className="rounded-lg p-5 mb-8"
+                  style={{ background: `${c.accentColor}08`, borderLeft: `3px solid ${c.accentColor}` }}
+                >
+                  <p className="text-sm leading-relaxed italic" style={{ color: `${c.textColor}cc` }}>
                     &ldquo;{message}&rdquo;
                   </p>
                 </div>
               )}
 
-              {/* Bottom ornament */}
-              <div className="flex items-center justify-center gap-3">
-                <div className="h-px flex-1 max-w-16" style={{ background: 'linear-gradient(90deg, transparent, rgba(155,168,181,0.4))' }} />
-                <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: '#B8A060', opacity: 0.6 }} />
-                <div className="h-px w-8" style={{ backgroundColor: '#9BA8B5', opacity: 0.3 }} />
-                <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: '#B8A060', opacity: 0.6 }} />
-                <div className="h-px flex-1 max-w-16" style={{ background: 'linear-gradient(270deg, transparent, rgba(155,168,181,0.4))' }} />
+              {/* Footer */}
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-px w-12" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor}40)` }} />
+                  <p className="text-xs tracking-[0.35em] uppercase" style={{ color: `${c.accentColor}80` }}>
+                    Created with InviteMaker
+                  </p>
+                  <div className="h-px w-12" style={{ background: `linear-gradient(270deg, transparent, ${c.accentColor}40)` }} />
+                </div>
               </div>
 
             </div>
           </div>
-        </div>
 
-        {/* Footer watermark */}
-        <div className="text-center mt-8">
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-12" style={{ background: 'linear-gradient(90deg, transparent, rgba(155,168,181,0.3))' }} />
-            <p
-              className="text-xs tracking-[0.35em] uppercase"
-              style={{ color: 'rgba(155,168,181,0.4)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
-            >
-              Created with InviteMaker
-            </p>
-            <div className="h-px w-12" style={{ background: 'linear-gradient(270deg, transparent, rgba(155,168,181,0.3))' }} />
-          </div>
+          {/* Bottom accent bar */}
+          <div className="h-1" style={{ background: `linear-gradient(90deg, ${c.accentColor}40, ${c.accentColor}, ${c.accentColor}40)` }} />
         </div>
-
       </div>
     </div>
   );
