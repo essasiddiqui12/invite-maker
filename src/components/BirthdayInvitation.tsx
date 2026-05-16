@@ -208,7 +208,7 @@ export default function BirthdayInvitation({
                     border: `1px solid ${c.accentColor}35`,
                   }}
                 >
-                  <span style={{ color: c.accentColor, fontFamily: 'var(--font-inter, Inter, sans-serif)', fontSize: '0.65rem', letterSpacing: '0.35em', textTransform: 'uppercase', fontWeight: 600 }}>
+                  <span style={{ color: c.accentColor, fontFamily: fontFamilyMap[c.fontFamily], fontSize: '0.65rem', letterSpacing: '0.35em', textTransform: 'uppercase', fontWeight: 600 }}>
                     ✦ You&apos;re Invited ✦
                   </span>
                 </div>
@@ -217,7 +217,7 @@ export default function BirthdayInvitation({
                 <h1
                   className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-3"
                   style={{
-                    fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                    fontFamily: fontFamilyMap[c.fontFamily],
                     color: c.textColor,
                   }}
                 >
@@ -231,14 +231,14 @@ export default function BirthdayInvitation({
               <div className="text-center mb-10">
                 <p
                   className="text-xs tracking-[0.35em] uppercase mb-2"
-                  style={{ color: `${c.accentColor}b0`, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
+                  style={{ color: `${c.accentColor}b0`, fontFamily: fontFamilyMap[c.fontFamily] }}
                 >
                   Celebrating
                 </p>
                 <h2
                   className="text-3xl sm:text-4xl font-bold"
                   style={{
-                    fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                    fontFamily: fontFamilyMap[c.fontFamily],
                     color: c.textColor,
                   }}
                 >
@@ -262,13 +262,13 @@ export default function BirthdayInvitation({
                 <div className="text-center mb-6">
                   <p
                     className="text-xs tracking-[0.3em] uppercase mb-2"
-                    style={{ color: c.accentColor, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
+                    style={{ color: c.accentColor, fontFamily: fontFamilyMap[c.fontFamily] }}
                   >
                     Date
                   </p>
                   <p
                     className="text-xs tracking-widest uppercase mb-1"
-                    style={{ color: `${c.textColor}80`, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
+                    style={{ color: `${c.textColor}80`, fontFamily: fontFamilyMap[c.fontFamily] }}
                   >
                     {weekday}
                   </p>
@@ -276,7 +276,7 @@ export default function BirthdayInvitation({
                     <span
                       className="text-5xl sm:text-6xl font-bold leading-none"
                       style={{
-                        fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                        fontFamily: fontFamilyMap[c.fontFamily],
                         color: c.textColor,
                       }}
                     >
@@ -286,7 +286,7 @@ export default function BirthdayInvitation({
                       <span
                         className="text-lg font-semibold leading-tight"
                         style={{
-                          fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                          fontFamily: fontFamilyMap[c.fontFamily],
                           color: c.accentColor,
                         }}
                       >
@@ -294,7 +294,7 @@ export default function BirthdayInvitation({
                       </span>
                       <span
                         className="text-sm"
-                        style={{ color: `${c.textColor}80`, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
+                        style={{ color: `${c.textColor}80`, fontFamily: fontFamilyMap[c.fontFamily] }}
                       >
                         {year}
                       </span>
@@ -320,8 +320,8 @@ export default function BirthdayInvitation({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>Time</p>
-                    <p className="text-base font-semibold" style={{ fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)', color: c.textColor }}>
+                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor, fontFamily: fontFamilyMap[c.fontFamily] }}>Time</p>
+                    <p className="text-base font-semibold" style={{ fontFamily: fontFamilyMap[c.fontFamily], color: c.textColor }}>
                       {formattedTime}
                     </p>
                   </div>
@@ -336,8 +336,8 @@ export default function BirthdayInvitation({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     </div>
-                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>Venue</p>
-                    <p className="text-sm font-semibold leading-snug" style={{ fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)', color: c.textColor }}>
+                    <p className="text-xs tracking-widest uppercase mb-1" style={{ color: c.accentColor, fontFamily: fontFamilyMap[c.fontFamily] }}>Venue</p>
+                    <p className="text-sm font-semibold leading-snug" style={{ fontFamily: fontFamilyMap[c.fontFamily], color: c.textColor }}>
                       {location}
                     </p>
                   </div>
@@ -357,7 +357,7 @@ export default function BirthdayInvitation({
                   <p
                     className="text-base sm:text-lg italic leading-relaxed"
                     style={{
-                      fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: `${c.textColor}cc`,
                     }}
                   >
@@ -385,7 +385,7 @@ export default function BirthdayInvitation({
             <div className="h-px w-12" style={{ background: `linear-gradient(90deg, transparent, ${c.accentColor}40)` }} />
             <p
               className="text-xs tracking-[0.35em] uppercase"
-              style={{ color: `${c.accentColor}80`, fontFamily: 'var(--font-inter, Inter, sans-serif)' }}
+              style={{ color: `${c.accentColor}80`, fontFamily: fontFamilyMap[c.fontFamily] }}
             >
               Created with InviteMaker
             </p>

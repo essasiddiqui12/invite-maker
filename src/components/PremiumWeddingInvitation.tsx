@@ -309,7 +309,7 @@ export default function PremiumWeddingInvitation({
                 <p
                   className="text-xs tracking-[0.45em] uppercase"
                   style={{
-                    fontFamily: 'var(--font-inter, Inter, sans-serif)',
+                    fontFamily: fontFamilyMap[c.fontFamily],
                     color: '#8B7355',
                     fontWeight: 500,
                   }}
@@ -336,7 +336,7 @@ export default function PremiumWeddingInvitation({
                   <p
                     className="text-sm tracking-[0.3em] uppercase"
                     style={{
-                      fontFamily: 'var(--font-inter, Inter, sans-serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: '#A07840',
                     }}
                   >
@@ -350,7 +350,7 @@ export default function PremiumWeddingInvitation({
                 <h2
                   className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight"
                   style={{
-                    fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                    fontFamily: fontFamilyMap[c.fontFamily],
                     color: c.textColor,
                     textShadow: '0 2px 12px rgba(201,169,110,0.35), 0 1px 3px rgba(160,120,64,0.2)',
                   }}
@@ -375,7 +375,7 @@ export default function PremiumWeddingInvitation({
                   <span
                     className="text-6xl sm:text-7xl italic font-bold"
                     style={{
-                      fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: '#C9A96E',
                       textShadow: '0 2px 16px rgba(201,169,110,0.4)',
                       lineHeight: 1,
@@ -392,7 +392,7 @@ export default function PremiumWeddingInvitation({
                 <h2
                   className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight"
                   style={{
-                    fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                    fontFamily: fontFamilyMap[c.fontFamily],
                     color: c.textColor,
                     textShadow: '0 2px 12px rgba(201,169,110,0.35), 0 1px 3px rgba(160,120,64,0.2)',
                   }}
@@ -420,7 +420,7 @@ export default function PremiumWeddingInvitation({
                 <p
                   className="text-xs tracking-[0.4em] uppercase"
                   style={{
-                    fontFamily: 'var(--font-inter, Inter, sans-serif)',
+                    fontFamily: fontFamilyMap[c.fontFamily],
                     color: '#5C4A2A',
                     fontWeight: 500,
                   }}
@@ -443,7 +443,7 @@ export default function PremiumWeddingInvitation({
                   <p
                     className="text-xs tracking-[0.35em] uppercase"
                     style={{
-                      fontFamily: 'var(--font-inter, Inter, sans-serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: '#8B7355',
                     }}
                   >
@@ -456,7 +456,7 @@ export default function PremiumWeddingInvitation({
                   <span
                     className="text-6xl font-bold leading-none"
                     style={{
-                      fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: '#1A1208',
                     }}
                   >
@@ -466,7 +466,7 @@ export default function PremiumWeddingInvitation({
                     <span
                       className="text-xl font-semibold leading-tight"
                       style={{
-                        fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                        fontFamily: fontFamilyMap[c.fontFamily],
                         color: '#C9A96E',
                       }}
                     >
@@ -475,7 +475,7 @@ export default function PremiumWeddingInvitation({
                     <span
                       className="text-sm"
                       style={{
-                        fontFamily: 'var(--font-inter, Inter, sans-serif)',
+                        fontFamily: fontFamilyMap[c.fontFamily],
                         color: '#8B7355',
                       }}
                     >
@@ -516,14 +516,14 @@ export default function PremiumWeddingInvitation({
                     </div>
                     <p
                       className="text-xs tracking-widest uppercase mb-1"
-                      style={{ fontFamily: 'var(--font-inter, Inter, sans-serif)', color: '#A07840' }}
+                      style={{ fontFamily: fontFamilyMap[c.fontFamily], color: '#A07840' }}
                     >
                       Time
                     </p>
                     <p
                       className="text-base font-semibold"
                       style={{
-                        fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                        fontFamily: fontFamilyMap[c.fontFamily],
                         color: '#1A1208',
                       }}
                     >
@@ -547,14 +547,14 @@ export default function PremiumWeddingInvitation({
                     </div>
                     <p
                       className="text-xs tracking-widest uppercase mb-1"
-                      style={{ fontFamily: 'var(--font-inter, Inter, sans-serif)', color: '#A07840' }}
+                      style={{ fontFamily: fontFamilyMap[c.fontFamily], color: '#A07840' }}
                     >
                       Venue
                     </p>
                     <p
                       className="text-sm font-semibold leading-snug"
                       style={{
-                        fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                        fontFamily: fontFamilyMap[c.fontFamily],
                         color: '#1A1208',
                       }}
                     >
@@ -573,7 +573,7 @@ export default function PremiumWeddingInvitation({
                   <p
                     className="text-base sm:text-lg italic leading-relaxed px-6"
                     style={{
-                      fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: '#5C4A2A',
                     }}
                   >
@@ -600,7 +600,7 @@ export default function PremiumWeddingInvitation({
                   <p
                     className="text-xs tracking-[0.35em] uppercase"
                     style={{
-                      fontFamily: 'var(--font-inter, Inter, sans-serif)',
+                      fontFamily: fontFamilyMap[c.fontFamily],
                       color: '#8B7355',
                       opacity: 0.6,
                     }}
