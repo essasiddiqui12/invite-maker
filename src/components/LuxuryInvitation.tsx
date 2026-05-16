@@ -57,7 +57,7 @@ export default function LuxuryInvitation({
   customization,
 }: LuxuryInvitationProps) {
   const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
-  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const fontSizeMap = { sm: 0.85, md: 1, lg: 1.15, xl: 1.3 };
   const fontFamilyMap = {
     playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
     inter: 'var(--font-inter, Inter, sans-serif)',
@@ -76,7 +76,7 @@ export default function LuxuryInvitation({
         fontFamily: fontFamilyMap[c.fontFamily],
       }}
     >
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl" style={{ zoom: fontSizeMap[c.fontSize] }}>
         <div
           className="relative rounded-2xl p-[3px]"
           style={{

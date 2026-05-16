@@ -51,7 +51,7 @@ export default function CorporateInvitation({
   title, hostName, date, time, location, message, customization,
 }: CorporateInvitationProps) {
   const c = { ...DEFAULT_CUSTOMIZATION, ...customization };
-  const fontSizeMap = { sm: '0.85rem', md: '1rem', lg: '1.15rem', xl: '1.3rem' };
+  const fontSizeMap = { sm: 0.85, md: 1, lg: 1.15, xl: 1.3 };
   const fontFamilyMap = {
     playfair: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
     inter: 'var(--font-inter, Inter, sans-serif)',
@@ -64,9 +64,9 @@ export default function CorporateInvitation({
     <div
       id="invitation-content"
       className="min-h-screen flex items-center justify-center py-16 px-4 pt-14"
-      style={{ background: c.bgColor, fontSize: fontSizeMap[c.fontSize], fontFamily: fontFamilyMap[c.fontFamily] }}
+      style={{ background: c.bgColor, fontFamily: fontFamilyMap[c.fontFamily] }}
     >
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl" style={{ zoom: fontSizeMap[c.fontSize] }}>
         <div
           className="relative rounded-xl overflow-hidden"
           style={{
